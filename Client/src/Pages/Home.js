@@ -16,7 +16,10 @@ export default class Home extends Component {
     fetch(url)
     .then(res => res.json())
     .then(res => this.setState({list:res}))
-    .catch(err => this.setState({errMassege:err.massege}));
+    .catch(err => this.setState({errMassege:err.massege},
+      () => { return setTimeout(() => {
+        return this.setState({ errMassege: "" });
+      },1000)}))
   }
 
   handleAdd = ({name,email,adress,phone})=>{
@@ -30,7 +33,10 @@ export default class Home extends Component {
       .then(res => this.setState({errMassege:"Added successfully !"},
       () => { return setTimeout(() => this.setState({errMassege:""}),1000)}))
       .then(res => this.fetchData())
-      .catch(err => this.setState({errMassege:err}));
+      .catch(err => this.setState({errMassege:err},
+        () => { return setTimeout(() => {
+          return this.setState({ errMassege: "" });
+        },1000)}))
   }
 
   handleEdit = ({_id,name,email,adress,phone})=>{
@@ -47,7 +53,10 @@ export default class Home extends Component {
       },1000)}))
       .then(res => this.AddOrEdit())
       .then(res => this.fetchData())
-      .catch(err => this.setState({errMassege:err.massege}));
+      .catch(err => this.setState({errMassege:err.massege},
+        () => { return setTimeout(() => {
+          return this.setState({ errMassege: "" });
+        },1000)}));
   }
 
   handleItemEdit=(_id) =>{
@@ -57,7 +66,10 @@ export default class Home extends Component {
       throw new Error ("Employee Is Not Found !")})
     .then(res => this.setState({itemEdit:res,title:"Edit Employee"}))
     .then(res => this.AddOrEdit())
-    .catch(err => this.setState({errMassege:err.message}));
+    .catch(err => this.setState({errMassege:err.message},
+      () => { return setTimeout(() => {
+        return this.setState({ errMassege: "" });
+      },1000)}))
   }
 
   handleDelete = (_id) => {
@@ -66,7 +78,10 @@ export default class Home extends Component {
     .then(res => this.setState({errMassege:"Deleted successfully !"},
     () => { return setTimeout(() => this.setState({errMassege:""}),1000)}))
     .then(res => this.fetchData())
-    .catch(err => this.setState({errMassege:err.massege}));
+    .catch(err => this.setState({errMassege:err.massege},
+      () => { return setTimeout(() => {
+        return this.setState({ errMassege: "" });
+      },1000)}))
   }
 
   AddOrEdit(){
