@@ -9,9 +9,10 @@ export default class Add extends Component{
 
     hendleInput = e => this.setState({[e.target.name]:e.target.value })
 
-    handleAddClick = ()=>{ 
+    handleAddClick = (event)=>{ 
         this.props.handleAdd({ id:this.state.id,name:this.state.name,email:this.state.email,adress:this.state.adress,phone:this.state.phone});
         this.setState({id:"",name:"",email:"",adress:"",phone:""});
+        event.preventDefault();
     }
     
     render() 
@@ -24,7 +25,7 @@ export default class Add extends Component{
                         <div className="modal-header table-title">						
                             <h2 className="modal-title"><b>{this.props.title}</b></h2>
                         </div>
-                        <form onSubmit={this.handleAddClick}>
+                        <form  onSubmit={this.handleAddClick}>
                         <div className="modal-body">
                             <input type="hidden" name="_id" value={this.state.id} onChange ={this.hendleInput}/>					
                             <div className="form-group">

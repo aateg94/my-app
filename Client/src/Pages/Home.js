@@ -15,7 +15,7 @@ export default class Home extends Component {
   fetchData() {
     fetch(url)
     .then(res => res.json())
-    .then(res => this.setState({list:[...res]}))
+    .then(res => this.setState({list:res}))
     .catch(err => this.setState({errMassege:err.massege}));
   }
 
@@ -24,7 +24,9 @@ export default class Home extends Component {
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({name,email,adress,phone})
                 })
-      .then(res => res.json())
+      .then(res => {
+        if(res.status === 201) return res.json()
+        throw new Error ("Employee Is Not Found !")})
       .then(res => this.setState({errMassege:"Added successfully !"},
       () => { return setTimeout(() => this.setState({errMassege:""}),1000)}))
       .then(res => this.fetchData())
@@ -32,21 +34,24 @@ export default class Home extends Component {
   }
 
   handleEdit = ({_id,name,email,adress,phone})=>{
-    const body = {name,email,adress,phone}
       fetch(`${url}/${_id}`,{  method: 'PUT',
                   headers:{'Content-Type': 'application/json'},
-                  body:JSON.stringify(body)
+                  body:JSON.stringify({name,email,adress,phone})
                 })
-      .then(res => res.json())
+      .then(res => {
+        if(res.status !== 404) return res.json()
+        throw new Error ("Employee Is Not Found !")})
       .then(res => this.setState({title:"Add Employee",errMassege:"Edited successfully !"},
-      () => { return setTimeout(() => this.setState({errMassege:""}),1000)}))
+      () => { return setTimeout(() => {
+        return this.setState({ errMassege: "" });
+      },1000)}))
       .then(res => this.AddOrEdit())
       .then(res => this.fetchData())
       .catch(err => this.setState({errMassege:err.massege}));
   }
 
   handleItemEdit=(_id) =>{
-    fetch(`${url}/5ee11dc7133bd03d9827f34a`)
+    fetch(`${url}/${_id}`)
     .then(res => {
       if(res.status !== 404) return res.json()
       throw new Error ("Employee Is Not Found !")})
